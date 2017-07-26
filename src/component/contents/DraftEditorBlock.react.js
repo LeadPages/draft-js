@@ -43,6 +43,7 @@ type Props = {
   block: ContentBlock,
   customStyleMap: Object,
   customStyleFn: Function,
+  customClassFn: Function,
   tree: List<any>,
   selection: SelectionState,
   decorator: DraftDecoratorType,
@@ -153,6 +154,7 @@ class DraftEditorBlock extends React.Component {
             styleSet={block.getInlineStyleAt(start)}
             customStyleMap={this.props.customStyleMap}
             customStyleFn={this.props.customStyleFn}
+            customClassFn={this.props.customClassFn}
             isLast={ii === lastLeafSet && jj === lastLeaf}
           />
         );

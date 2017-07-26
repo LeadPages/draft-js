@@ -34,6 +34,9 @@ type Props = {
   // Function that maps style names to CSS style objects.
   customStyleFn: Function,
 
+  // Function that maps style names to CSS classes to be applied.
+  customClassFn: Fucntion,
+
   // Whether to force the DOM selection after render.
   forceSelection: boolean,
 
@@ -141,7 +144,14 @@ class DraftEditorLeaf extends React.Component {
       text += '\n';
     }
 
-    const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
+    const {
+      customStyleMap, 
+      customStyleFn, 
+      customClassFn, 
+      offsetKey, 
+      styleSet
+    } = this.props;
+
     let styleObj = styleSet.reduce((map, styleName) => {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
@@ -158,15 +168,21 @@ class DraftEditorLeaf extends React.Component {
       return Object.assign(map, style, mergedStyles);
     }, {});
 
+    let classNames = [];
+    
     if (customStyleFn) {
       const newStyles = customStyleFn(styleSet, block);
       styleObj = Object.assign(styleObj, newStyles);
+    }
+    if (customClassFn) {
+      classNames = customClassFn(styleSet, block);
     }
 
     return (
       <span
         data-offset-key={offsetKey}
         ref="leaf"
+        className={classNames}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

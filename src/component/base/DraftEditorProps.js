@@ -170,6 +170,13 @@ export type DraftEditorProps = {
   // style names.
   customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
 
+  // Provide a function that will return CSS classes to be applied to 
+  // the leaf node.
+  customClassFn?: (
+    style: DraftInlineStyle, 
+    block: ContentBlock
+  ) => ?Array<string>,
+
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
