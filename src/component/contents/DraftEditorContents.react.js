@@ -97,6 +97,7 @@ class DraftEditorContents extends React.Component {
       blockRendererFn,
       customStyleMap,
       customStyleFn,
+      customClassFn,
       editorState,
     } = this.props;
 
@@ -135,6 +136,7 @@ class DraftEditorContents extends React.Component {
         blockProps: customProps,
         customStyleMap,
         customStyleFn,
+        customClassFn,
         decorator,
         direction,
         forceSelection,
