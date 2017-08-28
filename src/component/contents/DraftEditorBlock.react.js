@@ -60,7 +60,7 @@ type Props = {
  * A `DraftEditorBlock` is able to render a given `ContentBlock` to its
  * appropriate decorator and inline style components.
  */
-class DraftEditorBlock extends React.Component {
+class DraftEditorBlock extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.block !== nextProps.block ||
@@ -143,6 +143,10 @@ class DraftEditorBlock extends React.Component {
         var start = leaf.get('start');
         var end = leaf.get('end');
         return (
+          /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+           * error when upgrading Flow's support for React. Common errors found
+           * when upgrading Flow's React support are documented at
+           * https://fburl.com/eq7bs81w */
           <DraftEditorLeaf
             key={offsetKey}
             offsetKey={offsetKey}
@@ -205,7 +209,11 @@ class DraftEditorBlock extends React.Component {
     }).toArray();
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
+    /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
+     * when upgrading Flow's support for React. Common errors found when
+     * upgrading Flow's React support are documented at
+     * https://fburl.com/eq7bs81w */
     const {direction, offsetKey} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,

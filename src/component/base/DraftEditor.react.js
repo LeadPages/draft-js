@@ -66,10 +66,7 @@ type State = {
  * div, and provides a wide variety of useful function props for managing the
  * state of the editor. See `DraftEditorProps` for details.
  */
-class DraftEditor extends React.Component {
-  props: DraftEditorProps;
-  state: State;
-
+class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
@@ -202,6 +199,10 @@ class DraftEditor extends React.Component {
   _renderPlaceholder(): ?React.Element<any> {
     if (this._showPlaceholder()) {
       return (
+        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+         * error when upgrading Flow's support for React. Common errors found
+         * when upgrading Flow's React support are documented at
+         * https://fburl.com/eq7bs81w */
         <DraftEditorPlaceholder
           text={nullthrows(this.props.placeholder)}
           editorState={this.props.editorState}
@@ -213,7 +214,7 @@ class DraftEditor extends React.Component {
     return null;
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {readOnly, textAlignment} = this.props;
     const rootClass = cx({
       'DraftEditor/root': true,
@@ -228,6 +229,13 @@ class DraftEditor extends React.Component {
       wordWrap: 'break-word',
     };
 
+    // The aria-expanded and aria-haspopup properties should only be rendered
+    // for a combobox.
+    const ariaRole = this.props.role || 'textbox';
+    const ariaExpanded = ariaRole === 'combobox'
+      ? !!this.props.ariaExpanded
+      : null;
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -239,14 +247,13 @@ class DraftEditor extends React.Component {
               readOnly ? null : this.props.ariaActiveDescendantID
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
+            aria-controls={readOnly ? null : this.props.ariaControls}
             aria-describedby={
               this._showPlaceholder() ? this._placeholderAccessibilityID : null
             }
-            aria-expanded={readOnly ? null : this.props.ariaExpanded}
-            aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
+            aria-expanded={readOnly ? null : ariaExpanded}
             aria-label={this.props.ariaLabel}
             aria-multiline={this.props.ariaMultiline}
-            aria-owns={readOnly ? null : this.props.ariaOwneeID}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}
@@ -281,11 +288,18 @@ class DraftEditor extends React.Component {
             onPaste={this._onPaste}
             onSelect={this._onSelect}
             ref="editor"
-            role={readOnly ? null : (this.props.role || 'textbox')}
+            role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
+            {
+              }
+            {}
+            {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+              * error when upgrading Flow's support for React. Common errors
+              * found when upgrading Flow's React support are documented at
+              * https://fburl.com/eq7bs81w */}
             <DraftEditorContents
               blockRenderMap={this.props.blockRenderMap}
               blockRendererFn={this.props.blockRendererFn}
